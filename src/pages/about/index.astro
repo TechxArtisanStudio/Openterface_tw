@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DocLinkBanner from '../../components/DocLinkBanner.astro';
+import { docsPath } from '../../config/site';
+---
+
+<BaseLayout
+  title="關於我們"
+  description="瞭解 Openterface —— 由 TechxArtisan 打造的開源 KVM-over-USB 解決方案。"
+  ogImageAlt="TechxArtisan 出品的 Openterface 開源 KVM-over-USB 解決方案"
+  canonicalPath="/about/"
+>
+  <DocLinkBanner />
+  <section class="py-16">
+    <div class="mx-auto max-w-3xl px-4">
+      <h1 class="text-4xl font-bold">關於我們</h1>
+      <p class="mt-6 text-lg leading-relaxed text-muted">
+        Openterface 為 IT 專業人士、開發者和創客打造超緊湊、開源的 KVM-over-USB 工具。
+        從眾籌成功的 Mini-KVM 到鑰匙扣大小的 KVM-GO，再到可編程的 KeyMod 系列，我們的使命是
+        簡化無頭計算機的控制，告別笨重的設備和複雜的網絡配置。
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href={docsPath('/about/about-us/')} class="btn btn-secondary" target="_blank" rel="noopener">
+          瞭解更多 →
+        </a>
+        <a href={docsPath('/about/compliance/')} class="btn btn-secondary" target="_blank" rel="noopener">
+          合規性 →
+        </a>
+        <a href={docsPath('/about/community/')} class="btn btn-secondary" target="_blank" rel="noopener">
+          社區 →
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

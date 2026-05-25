@@ -1,0 +1,300 @@
+---
+import { mainNav } from '../data/navigation';
+import Logo from './Logo.astro';
+import LocaleSwitcher from './LocaleSwitcher.astro';
+import NavDropdown from './NavDropdown.astro';
+import { siteConfig } from '../config/site';
+import { LOCALE_LABELS, SUPPORTED_LOCALES, switchLocaleUrl, type SiteLocale } from '../lib/locale';
+
+const productItem = mainNav.find((item) => item.children);
+const productLinks = productItem?.children ?? [];
+const primaryLinks = mainNav.filter(
+  (item) => !item.children && !item.external && item.href !== '/',
+);
+const externalLinks = mainNav.filter((item) => item.external);
+const currentPath = Astro.url.pathname;
+const currentSearch = Astro.url.search;
+const locale = siteConfig.locale as SiteLocale;
+---
+
+<header class="site-header sticky top-0 z-50 bg-primary-dark shadow-md">
+  <div class="site-header__inner">
+    <div class="site-header__start">
+      <a href="/" class="site-header__brand">
+        <Logo variant="onPrimary" class="site-header__logo" />
+      </a>
+      <span class="site-header__suffix" aria-hidden="true"></span>
+      <span class="site-header__lead" aria-hidden="true"></span>
+    </div>
+
+    <nav class="site-header__nav" aria-label="Main navigation">
+      {
+        mainNav.map((item) =>
+          item.children ? (
+            <NavDropdown label={item.label} children={item.children} />
+          ) : (
+            <a
+              href={item.href}
+              class="site-header__nav-link"
+              target={item.external ? '_blank' : undefined}
+              rel={item.external ? 'noopener noreferrer' : undefined}
+            >
+              {item.label}{item.external ? ' ↗' : ''}
+            </a>
+          ),
+        )
+      }
+    </nav>
+
+    <div class="site-header__toolbar">
+      <LocaleSwitcher
+        currentPath={currentPath}
+        currentSearch={currentSearch}
+        class="hidden sm:block"
+      />
+
+      <details class="mobile-nav relative xl:hidden">
+        <summary
+          class="site-header__icon-btn mobile-nav-toggle"
+          aria-label="Open menu"
+        >
+          <svg class="mobile-nav-icon-open h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"></path>
+          </svg>
+          <svg class="mobile-nav-icon-close hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"></path>
+          </svg>
+        </summary>
+
+        <div class="mobile-nav-backdrop fixed inset-0 top-[var(--site-header-height)] z-40 bg-black/45"></div>
+
+        <nav
+          class="mobile-nav-panel fixed inset-x-0 top-[var(--site-header-height)] z-50 border-b border-gray-200 bg-white shadow-lg"
+          aria-label="Mobile navigation"
+        >
+          <div class="mx-auto max-h-[min(75vh,36rem)] max-w-7xl overflow-y-auto overscroll-contain px-3 py-2 sm:px-4 sm:py-3">
+            {
+              productItem && (
+                <div class="mobile-nav-section">
+                  <p class="mobile-nav-section-label">{productItem.label}</p>
+                  <div class="mobile-nav-section-links">
+                    {
+                      productLinks.map((child) => (
+                        <a href={child.href} class="mobile-nav-link">{child.label}</a>
+                      ))
+                    }
+                  </div>
+                </div>
+              )
+            }
+
+            <div class="mobile-nav-section">
+              <p class="mobile-nav-section-label">Explore</p>
+              <div class="mobile-nav-section-links">
+                {
+                  primaryLinks.map((item) => (
+                    <a href={item.href} class="mobile-nav-link">{item.label}</a>
+                  ))
+                }
+              </div>
+            </div>
+
+            {
+              externalLinks.length > 0 && (
+                <div class="mobile-nav-section pb-1">
+                  <p class="mobile-nav-section-label">Documentation</p>
+                  <div class="mobile-nav-section-links">
+                    {
+                      externalLinks.map((item) => (
+                        <a
+                          href={item.href}
+                          class="mobile-nav-link mobile-nav-link--external"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {item.label}
+                          <span class="ml-1.5 text-xs text-muted" aria-hidden="true">↗</span>
+                        </a>
+                      ))
+                    }
+                  </div>
+                </div>
+              )
+            }
+
+            <div class="mobile-nav-section pb-1 sm:hidden">
+              <p class="mobile-nav-section-label">Language</p>
+              <div class="mobile-nav-section-links">
+                {
+                  SUPPORTED_LOCALES.map((loc) => (
+                    <a
+                      href={switchLocaleUrl(currentPath, loc, currentSearch)}
+                      class:list={[
+                        'mobile-nav-link',
+                        loc === locale ? 'font-semibold text-primary-dark' : '',
+                      ]}
+                    >
+                      {LOCALE_LABELS[loc]}
+                    </a>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script>
+  function initNavDropdowns() {
+    document.querySelectorAll('.nav-dropdown').forEach((dropdown) => {
+      if (dropdown.dataset.initialized) return;
+      dropdown.dataset.initialized = 'true';
+
+      dropdown.addEventListener('toggle', () => {
+        if (!(dropdown instanceof HTMLDetailsElement) || !dropdown.open) return;
+        document.querySelectorAll('.nav-dropdown[open]').forEach((other) => {
+          if (other !== dropdown && other instanceof HTMLDetailsElement) other.open = false;
+        });
+      });
+    });
+
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      document.querySelectorAll('.nav-dropdown[open]').forEach((dropdown) => {
+        if (dropdown instanceof HTMLDetailsElement && !dropdown.contains(target)) {
+          dropdown.open = false;
+        }
+      });
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      document.querySelectorAll('.nav-dropdown[open]').forEach((dropdown) => {
+        if (dropdown instanceof HTMLDetailsElement) dropdown.open = false;
+      });
+    });
+  }
+
+  function initMobileNav() {
+    document.querySelectorAll('.mobile-nav').forEach((details) => {
+      if (details.dataset.initialized) return;
+      details.dataset.initialized = 'true';
+
+      const backdrop = details.querySelector('.mobile-nav-backdrop');
+      const links = details.querySelectorAll('.mobile-nav-link');
+      const summary = details.querySelector('summary');
+
+      const setOpen = (open: boolean) => {
+        if (!(details instanceof HTMLDetailsElement)) return;
+        details.open = open;
+        document.body.classList.toggle('overflow-hidden', open);
+        summary?.setAttribute('aria-expanded', open ? 'true' : 'false');
+        summary?.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      };
+
+      details.addEventListener('toggle', () => {
+        if (!(details instanceof HTMLDetailsElement)) return;
+        setOpen(details.open);
+      });
+
+      backdrop?.addEventListener('click', () => setOpen(false));
+
+      links.forEach((link) => {
+        link.addEventListener('click', () => setOpen(false));
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && details instanceof HTMLDetailsElement && details.open) {
+          setOpen(false);
+        }
+      });
+
+      setOpen(details instanceof HTMLDetailsElement && details.open);
+    });
+  }
+
+  initNavDropdowns();
+  initMobileNav();
+  document.addEventListener('astro:page-load', () => {
+    initNavDropdowns();
+    initMobileNav();
+  });
+</script>
+
+<style>
+  .mobile-nav > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-nav:not([open]) .mobile-nav-panel,
+  .mobile-nav:not([open]) .mobile-nav-backdrop {
+    display: none;
+  }
+
+  .mobile-nav[open] .mobile-nav-backdrop {
+    display: block;
+  }
+
+  .mobile-nav[open] .mobile-nav-toggle {
+    background-color: rgb(255 255 255 / 0.15);
+  }
+
+  .mobile-nav[open] .mobile-nav-icon-open {
+    display: none;
+  }
+
+  .mobile-nav[open] .mobile-nav-icon-close {
+    display: block;
+  }
+
+  .mobile-nav-section {
+    margin-top: 0.5rem;
+    border-top: 1px solid #f3f4f6;
+    padding-top: 0.75rem;
+  }
+
+  .mobile-nav-section-label {
+    padding: 0 0.5rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-muted) 85%, transparent);
+  }
+
+  .mobile-nav-section-links {
+    margin-top: 0.25rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-nav-link {
+    display: flex;
+    min-height: 2.75rem;
+    align-items: center;
+    border-radius: 0.375rem;
+    padding: 0.625rem 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--color-ink);
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link:focus-visible {
+    background-color: var(--color-brand-light);
+  }
+
+  .mobile-nav-link--home {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .mobile-nav-link--external {
+    color: color-mix(in srgb, var(--color-ink) 88%, var(--color-muted));
+  }
+</style>

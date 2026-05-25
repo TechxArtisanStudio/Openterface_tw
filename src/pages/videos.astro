@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import VideoCatalog from '../components/VideoCatalog.astro';
+import { siteConfig } from '../config/site';
+import { getVideosStrings } from '../i18n/videos';
+import { pageOgImages } from '../lib/seo';
+
+const strings = getVideosStrings(siteConfig.locale);
+---
+
+<BaseLayout
+  title={strings.title}
+  description={strings.subtitle}
+  ogImage={pageOgImages.videos}
+  ogImageAlt="Openterface KVM product demos and community reviews on YouTube"
+  canonicalPath="/videos/"
+>
+  <VideoCatalog />
+</BaseLayout>
