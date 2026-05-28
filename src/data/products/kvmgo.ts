@@ -7,89 +7,53 @@ import type { Product } from '../products';
  */
 export const kvmgoProduct: Product = {
   slug: 'kvm-go',
-  title: 'Openterface KVM-GO Series',
-  slogan: 'Ultra-Compact KVM That Fits on Your Keychain',
-  subtitle: 'For Critical Tech Moments — Plug. Control. Go.',
+  title: "Openterface KVM-GO Series",
+  slogan: "能掛在鑰匙扣上的超緊湊 KVM",
+  subtitle: "應對技術關鍵時刻 —— 即插即用，隨心掌控。",
   status: 'pre-order',
   description:
-    'The next-generation KVM-over-USB solution with built-in video connectors (HDMI, DisplayPort, or VGA). Ultra-compact, keychain-sized, and built for rapid IT operations in data centers, server rooms, and the field — no loose video cables required.',
+    "集成視頻接口（HDMI、DisplayPort 或 VGA）的新一代 KVM-over-USB 解決方案。超緊湊鑰匙扣大小，專為數據中心和機房的快速 IT 運維而設計。",
   seoDescription:
-    'Control headless computers with Openterface KVM-GO. Built-in HDMI/DP/VGA connectors, keychain-sized, 4K-capable KVM-over-USB for IT professionals.',
+    "使用 Openterface KVM-Go 掌控無頭計算機。內置 HDMI/DP/VGA，鑰匙扣大小，專為 IT 專業人士打造的 4K KVM-over-USB。",
   keywords:
-    'KVM-GO, KVM over USB, ultra-compact KVM, keychain KVM, 4K KVM, built-in HDMI, MicroSD KVM, headless control',
+    "KVM-Go, KVM over USB, ultra-compact KVM, keychain KVM, 4K KVM, headless control",
   heroImage: 'https://assets.openterface.com/images/cover/kvm-go-triple.webp',
   heroImages: [
     'https://assets.openterface.com/images/cover/kvm-go-triple.webp',
     'https://assets.openterface.com/images/cover/kvm-go-triple-2.webp',
   ],
-  buyLabel: 'Pre-Order NOW',
+  buyLabel: "立即預訂",
   buyHref: siteConfig.links.kvmgoPurchase,
-  funding: { amount: '$101,548', date: 'Funded on Dec 30, 2025', backers: '478' },
+  funding: { amount: "$101,548", date: "Funded on Dec 30, 2025", backers: "478" },
   painPoints: [
-    'Traditional KVM gear is bulky and requires separate video cables',
-    'Emergency server access in the field needs a pocket-sized tool',
-    'Headless troubleshooting without network access is slow',
+    "傳統 KVM 設備笨重且需要額外的視頻線纜",
+    "現場緊急訪問服務器需要便攜式工具",
+    "在無網絡訪問的情況下，對無頭設備進行故障排除效率低下",
   ],
   solutions: [
-    'Built-in male HDMI, DisplayPort, or VGA connectors — no loose cables',
-    'Keychain form factor (~25 g) always within reach',
-    'KVM-over-USB with sub-second startup — no network or target drivers',
+    "內置視頻接口，告別繁雜線纜",
+    "鑰匙扣外形，隨時隨地觸手可及",
+    "KVM-over-USB —— 受控端無需網絡或驅動程序",
   ],
   hwFeatures: [
-    {
-      title: 'Keychain-sized design',
-      description: '18 × 18 × 55 mm aluminum body — fits in your pocket, not a crash cart.',
-    },
-    {
-      title: 'Built-in video connectors',
-      description: 'Direct plug-in HDMI, DisplayPort, or VGA male connectors — zero cable hunt.',
-    },
-    {
-      title: '4K video capture',
-      description: 'Up to 4096×2160 @ 60 Hz input; default 1080p@60 for stability (4K experimental).',
-    },
-    {
-      title: 'MicroSD slot',
-      description: 'Switchable storage for OS images, tools, and file transfer between host and target.',
-    },
-    {
-      title: 'BIOS-level access',
-      description: 'Reach firmware, boot menus, and recovery screens without network KVM.',
-    },
-    {
-      title: 'Sub-second startup',
-      description: 'Hardware ready in under 1 second — immediate troubleshooting in the field.',
-    },
+    { title: "內置視頻接口", description: "提供 HDMI、DisplayPort 或 VGA 型號，無需外部線纜。" },
+    { title: "鑰匙扣尺寸", description: "Openterface 系列中體積最小的 KVM-over-USB 設備。" },
+    { title: "4K 支持", description: "為現代顯示器提供高分辨率視頻採集。" },
   ],
   swFeatures: [
-    {
-      title: 'Cross-platform host apps',
-      description: 'macOS, Windows, Linux, Android, and Chrome web app support.',
-    },
-    {
-      title: 'Text transfer',
-      description: 'Send usernames, passwords, and code via simulated keystrokes (ASCII).',
-    },
-    {
-      title: 'Open source',
-      description: 'Fully open hardware and software — transparent, community-driven stack.',
-    },
+    { title: "Openterface Qt 應用", description: "跨平臺控制端，支持 Windows、macOS 和 Linux。" },
+    { title: "MicroSD 切換", description: "可切換存儲空間，用於存放便攜式系統鏡像和工具。" },
+    { title: "開源技術棧", description: "由社區驅動的固件和主機端應用。" },
   ],
   specs: [
-    { label: 'Size', value: '18 × 18 × 55 mm (~25 g)' },
-    { label: 'Models', value: 'HDMI · DisplayPort · VGA (in development)' },
-    { label: 'Video input', value: 'Up to 4K @ 60 Hz (YUV420)' },
-    { label: 'Video output', value: 'Up to 4K @ 60 Hz (MJPEG)' },
-    { label: 'Storage', value: 'MicroSD slot for host/target file transfer' },
-    { label: 'Power', value: 'USB-C powered (no external supply)' },
+    { label: "視頻", value: "HDMI / DP / VGA (model dependent)" },
+    { label: "分辨率", value: "Up to 4K" },
+    { label: "連接方式", value: "USB-C KVM-over-USB" },
   ],
   useCases: [
-    'Data center walk-throughs',
-    'Headless device setup',
-    'Field IT and homelab rescue',
-    'Travel EDC toolkit',
-    'Legacy VGA rack access',
-    'Maker faire & bench demos',
+    "數據中心巡檢",
+    "無頭設備設置",
+    "現場 IT 維護與個人實驗室搶修",
   ],
   useCaseCards: [
     {
@@ -159,12 +123,11 @@ export const kvmgoProduct: Product = {
   latestNewsSubtitle: 'Production milestones, app releases, and community news.',
   latestNewsLabel: 'Read on Openterface News →',
   docLinks: [
-    { label: 'Features', href: docsPath('/products/kvmgo/features/') },
-    { label: 'Beta Quick Start', href: docsPath('/products/kvmgo/beta-quick-start/') },
-    { label: 'How to Connect', href: docsPath('/products/kvmgo/how-to-connect/') },
-    { label: 'MicroSD Switch', href: docsPath('/products/kvmgo/microsd-switch/') },
-    { label: 'Reviews & Media', href: docsPath('/products/kvmgo/reviews/') },
-    { label: 'FAQs', href: docsPath('/products/kvmgo/faq/') },
+    { label: "功能特性", href: docsPath("/product/kvm-go/features/") },
+    { label: "Beta 版快速入門", href: docsPath("/product/kvm-go/beta-quick-start/") },
+    { label: "連接指南", href: docsPath("/product/kvm-go/how-to-connect/") },
+    { label: "常見問題", href: docsPath("/product/kvm-go/faq/") },
+    { label: "下載應用", href: docsPath("/app/overview/") },
   ],
-  legacyBase: '/products/kvmgo/',
+  legacyBase: "/products/kvm-go/",
 };
