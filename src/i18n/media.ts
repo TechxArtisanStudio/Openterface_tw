@@ -25,13 +25,20 @@ export type MediaStrings = {
   formatVideos: string;
   formatShorts: string;
   formatPosts: string;
-  formatTestimonials: string;
+  formatCoverage: string;
   formatChipsAria: string;
   sampleBadge: string;
   readOriginal: string;
+  readArticle: string;
+  pressHeading: string;
   platformX: string;
   platformThreads: string;
   platformInstagram: string;
+  platformBluesky: string;
+  platformReddit: string;
+  platformBlog: string;
+  platformLinkedin: string;
+  platformGithub: string;
 };
 
 const en: MediaStrings = {
@@ -60,13 +67,20 @@ const en: MediaStrings = {
   formatVideos: 'Videos',
   formatShorts: 'Shorts',
   formatPosts: 'Posts',
-  formatTestimonials: 'Testimonials',
+  formatCoverage: 'Press',
   formatChipsAria: 'Filter by media format',
   sampleBadge: 'Sample',
   readOriginal: 'Read original →',
+  readArticle: 'Read article →',
+  pressHeading: 'In the press',
   platformX: 'X',
   platformThreads: 'Threads',
   platformInstagram: 'Instagram',
+  platformBluesky: 'Bluesky',
+  platformReddit: 'Reddit',
+  platformBlog: 'Blog',
+  platformLinkedin: 'LinkedIn',
+  platformGithub: 'GitHub',
 };
 
 const translations: Record<string, MediaStrings> = {

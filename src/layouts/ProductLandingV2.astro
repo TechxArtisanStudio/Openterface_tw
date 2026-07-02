@@ -1,5 +1,6 @@
 ---
 import DocLinkBanner from '../components/DocLinkBanner.astro';
+import ProductSubscribeSection from '../components/ProductSubscribeSection.astro';
 import FeatureGrid from '../components/product/FeatureGrid.astro';
 import FundingBadge from '../components/product/FundingBadge.astro';
 import HeroCarousel from '../components/product/HeroCarousel.astro';
@@ -87,6 +88,8 @@ const videoProductSlug = product.videoProductSlug ?? product.slug;
 
   <DocLinkBanner variant="product" />
 
+  <ProductSubscribeSection productTitle={product.title} productSlug={product.slug} />
+
   <section class="product-section">
     <div class="product-section__inner">
       <p class="product-body mx-auto max-w-3xl text-center">{product.description}</p>
@@ -156,7 +159,7 @@ const videoProductSlug = product.videoProductSlug ?? product.slug;
   <ProductVideoGrid
     title={product.videoSectionTitle ?? 'Community reviews & demos'}
     productSlug={videoProductSlug}
-    videosLink={`/videos/?product=${encodeURIComponent(videoProductSlug)}`}
+    videosLink={`/media/?product=${encodeURIComponent(videoProductSlug)}`}
   />
 
   {

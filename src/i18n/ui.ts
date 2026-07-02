@@ -96,7 +96,8 @@ export const ui: MarketingUi = {
     "newsletterFootnote": "隨時可取消訂閱。",
     "copyright": "Openterface. 開源 KVM-over-USB。",
     "privacy": "隱私權政策",
-    "terms": "服務條款"
+    "terms": "服務條款",
+    "newsletterLink": "Newsletter"
   },
   "productLanding": {
     "downloadApp": "下載應用程式",
@@ -113,5 +114,17 @@ export const ui: MarketingUi = {
     "documentation": "文件",
     "ctaTitle": "準備好開始了嗎？",
     "ctaSubtitle": "訂購硬體並下載適用於您平台的 Openterface 應用程式。"
+  },
+  "productSubscribe": {
+    "kicker": "Stay in the loop",
+    "heading": "Get {product} launch & firmware updates",
+    "description": "Be first to know about pre-orders, firmware releases, and setup tips for this product — at most one email per month.",
+    "benefitCrowdfunding": "Early access to crowdfunding and pre-order windows",
+    "benefitGuides": "Setup guides and app release notes",
+    "benefitUnsubscribe": "Unsubscribe anytime with one click",
+    "submitLabel": "Subscribe for updates",
+    "namePlaceholder": "Name (optional)",
+    "emailPlaceholder": "Email address *",
+    "footnote": "At most one email per month. Unsubscribe anytime."
   }
 };

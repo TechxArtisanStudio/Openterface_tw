@@ -1,6 +1,8 @@
-/** Client-side sort/filter for the /videos/ Media hub. */
+/** Client-side sort/filter for the /media/ hub — multi-section layout. */
 
-type MediaFormat = 'long' | 'short' | 'post' | 'testimonial';
+import { MEDIA_SECTIONS } from '../lib/media-sections';
+
+type MediaFormat = 'long' | 'short' | 'post' | 'coverage';
 
 type MediaCatalogEntry = {
   id: string;
@@ -19,9 +21,13 @@ type MediaCatalogEntry = {
   viewsFormatted?: string;
   zIndex?: number;
   excerpt?: string;
-  platform?: 'x' | 'threads' | 'instagram';
+  platform?: string;
   externalUrl?: string;
   sample?: boolean;
+  outlet?: string;
+  outletUrl?: string;
+  logoUrl?: string;
+  quote?: string;
 };
 
 type MediaCatalogConfig = {
@@ -35,6 +41,7 @@ type MediaCatalogConfig = {
   emptyResults: string;
   sampleBadge: string;
   readOriginal: string;
+  readArticle: string;
   platformLabels: Record<string, string>;
 };
 
@@ -74,11 +81,12 @@ function populateSelect(
 
 function readUrlState(): { product: string; language: string; sort: string; format: string; app: string } {
   const sp = new URLSearchParams(window.location.search);
+  const format = sp.get('format') ?? '';
   return {
     product: sp.get('product') ?? sp.get('p') ?? '',
     language: sp.get('l') ?? '',
     sort: sp.get('s') ?? 'newest',
-    format: sp.get('format') ?? '',
+    format: format === 'testimonial' ? 'post' : format,
     app: sp.get('app') ?? '',
   };
 }
@@ -111,6 +119,7 @@ function syncUrlFromState(state: {
   window.history.replaceState(null, '', `${url.pathname}${qs ? `?${qs}` : ''}${url.hash}`);
 }
 
+/** Sort within a single section bucket (views sort applies to videos only). */
 function compareEntries(
   a: MediaCatalogEntry,
   b: MediaCatalogEntry,
@@ -192,7 +201,7 @@ function renderVideoCard(entry: MediaCatalogEntry, config: MediaCatalogConfig): 
         </span>
       </div>
       <div class="mt-3 flex flex-col gap-2">
-        <h2 class="line-clamp-2 text-base font-semibold leading-snug text-ink group-hover:text-primary-dark">${escapeHtml(entry.title)}</h2>
+        <h3 class="line-clamp-2 text-base font-semibold leading-snug text-ink group-hover:text-primary-dark">${escapeHtml(entry.title)}</h3>
         <div class="flex flex-wrap gap-1.5">${productLabel}${appLabel}${langLabel}</div>
         <div class="flex items-center gap-2">${avatar}<span class="min-w-0 truncate text-sm text-muted">${escapeHtml(entry.author)}</span></div>
         ${viewsLine}
@@ -202,6 +211,40 @@ function renderVideoCard(entry: MediaCatalogEntry, config: MediaCatalogConfig): 
 
   const img = article.querySelector('img[alt=""]');
   if (img instanceof HTMLImageElement) img.alt = entry.title;
+
+  return article;
+}
+
+function renderCoverageCard(entry: MediaCatalogEntry, config: MediaCatalogConfig): HTMLElement {
+  const article = document.createElement('article');
+  article.className = 'media-catalog-card media-catalog-card--coverage group';
+  article.dataset.entryId = entry.id;
+  article.dataset.format = entry.format;
+  article.dataset.date = entry.date;
+  article.dataset.product = entry.product ?? '';
+  article.dataset.language = entry.language ?? '';
+  article.dataset.app = entry.app ?? '';
+
+  const logo = entry.logoUrl
+    ? `<img src="${escapeHtml(entry.logoUrl)}" alt="" width="28" height="28" class="h-7 w-7 shrink-0 rounded-full bg-gray-100 object-cover ring-1 ring-gray-200/80" loading="lazy" decoding="async" />`
+    : '';
+  const productLabel = entry.product
+    ? `<div class="mt-2 flex flex-wrap gap-1.5"><span class="media-catalog-tag media-catalog-tag--product">${escapeHtml(config.productLabels[entry.product] ?? entry.product)}</span></div>`
+    : '';
+  const quote = escapeHtml(entry.quote ?? entry.excerpt ?? '');
+
+  article.innerHTML = `
+    <a href="${escapeHtml(entry.externalUrl ?? '#')}" target="_blank" rel="noopener noreferrer" class="media-coverage-card card flex h-full gap-3 hover:border-primary-dark hover:shadow-md">
+      ${logo}
+      <div class="min-w-0 flex-1">
+        <p class="text-sm font-semibold text-ink">${escapeHtml(entry.outlet ?? entry.title)}</p>
+        <p class="text-xs text-muted">${escapeHtml(entry.author)}</p>
+        <p class="mt-2 line-clamp-3 text-sm text-muted italic">"${quote}"</p>
+        ${productLabel}
+        <p class="mt-2 text-sm font-semibold text-primary-dark">${escapeHtml(config.readArticle)}</p>
+      </div>
+    </a>
+  `;
 
   return article;
 }
@@ -216,26 +259,46 @@ function renderPostCard(entry: MediaCatalogEntry, config: MediaCatalogConfig): H
   article.dataset.language = entry.language ?? '';
   article.dataset.app = entry.app ?? '';
 
-  const platform = entry.platform ? config.platformLabels[entry.platform] ?? entry.platform : 'Social';
-  const sampleBadge = entry.sample
-    ? `<span class="media-catalog-tag media-catalog-tag--sample">${escapeHtml(config.sampleBadge)}</span>`
-    : '';
+  const platform = entry.platform
+    ? config.platformLabels[entry.platform] ?? entry.platform
+    : 'Social';
   const productLabel = entry.product
     ? `<span class="media-catalog-tag media-catalog-tag--product">${escapeHtml(config.productLabels[entry.product] ?? entry.product)}</span>`
     : '';
+  const cta = entry.externalUrl
+    ? `<p class="mt-3 text-sm font-semibold text-primary-dark">${escapeHtml(config.readOriginal)}</p>`
+    : '';
+  const wrapperOpen = entry.externalUrl
+    ? `<a href="${escapeHtml(entry.externalUrl)}" target="_blank" rel="noopener noreferrer" class="card block h-full hover:border-primary-dark hover:shadow-md">`
+    : '<div class="card block h-full">';
+  const wrapperClose = entry.externalUrl ? '</a>' : '</div>';
+  const titleClass = entry.externalUrl
+    ? 'mt-3 line-clamp-2 text-base font-semibold leading-snug text-ink group-hover:text-primary-dark'
+    : 'mt-3 line-clamp-2 text-base font-semibold leading-snug text-ink';
+  const excerptClass = 'mt-2 line-clamp-3 text-sm text-muted';
+  const platformHeader = entry.thumbnail
+    ? ''
+    : `<div class="flex items-start justify-between gap-2"><span class="text-xs font-bold uppercase tracking-wide text-muted">${escapeHtml(platform)}</span></div>`;
+  const thumb = entry.thumbnail
+    ? `<div class="media-catalog-thumb relative aspect-video overflow-hidden rounded-xl bg-gray-200 shadow-sm ring-1 ring-black/5 transition duration-300 group-hover:-translate-y-0.5 group-hover:shadow-md group-hover:ring-primary-dark/30">
+        <img src="${escapeHtml(entry.thumbnail)}" alt="${escapeHtml(entry.title)}" width="480" height="270" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+        <span class="pointer-events-none absolute left-2 top-2 rounded-full bg-black/60 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">${escapeHtml(platform)}</span>
+      </div>`
+    : '';
+  const avatar = entry.channelAvatar
+    ? `<img src="${escapeHtml(entry.channelAvatar)}" alt="" width="22" height="22" class="h-[22px] w-[22px] shrink-0 rounded-full bg-gray-100 object-cover ring-1 ring-gray-200/80" loading="lazy" decoding="async" />`
+    : '';
 
   article.innerHTML = `
-    <a href="${escapeHtml(entry.externalUrl ?? '#')}" target="_blank" rel="noopener noreferrer" class="card block h-full hover:border-primary-dark hover:shadow-md">
-      <div class="flex items-start justify-between gap-2">
-        <span class="text-xs font-bold uppercase tracking-wide text-muted">${escapeHtml(platform)}</span>
-        ${sampleBadge}
-      </div>
-      <h2 class="mt-3 line-clamp-2 text-base font-semibold leading-snug text-ink group-hover:text-primary-dark">${escapeHtml(entry.title)}</h2>
-      <p class="mt-2 line-clamp-3 text-sm text-muted">${escapeHtml(entry.excerpt ?? '')}</p>
+    ${wrapperOpen}
+      ${thumb}
+      ${platformHeader}
+      <h3 class="${titleClass}">${escapeHtml(entry.title)}</h3>
+      <p class="${excerptClass}">${escapeHtml(entry.excerpt ?? '')}</p>
       <div class="mt-3 flex flex-wrap gap-1.5">${productLabel}</div>
-      <p class="mt-3 text-sm text-muted">${escapeHtml(entry.author)}${entry.date ? ` · ${escapeHtml(entry.date)}` : ''}</p>
-      <p class="mt-3 text-sm font-semibold text-primary-dark">${escapeHtml(config.readOriginal)}</p>
-    </a>
+      <div class="mt-3 flex items-center gap-2">${avatar}<p class="min-w-0 text-sm text-muted">${escapeHtml(entry.author)}${entry.date ? ` · ${escapeHtml(entry.date)}` : ''}</p></div>
+      ${cta}
+    ${wrapperClose}
   `;
 
   return article;
@@ -243,6 +306,7 @@ function renderPostCard(entry: MediaCatalogEntry, config: MediaCatalogConfig): H
 
 function renderEntry(entry: MediaCatalogEntry, config: MediaCatalogConfig): HTMLElement {
   if (VIDEO_FORMATS.has(entry.format)) return renderVideoCard(entry, config);
+  if (entry.format === 'coverage') return renderCoverageCard(entry, config);
   return renderPostCard(entry, config);
 }
 
@@ -251,7 +315,6 @@ export function initMediaCatalog(
   entries: MediaCatalogEntry[],
   config: MediaCatalogConfig,
 ): void {
-  const grid = root.querySelector<HTMLElement>('[data-media-grid]');
   const sortEl = root.querySelector<HTMLSelectElement>('[data-sort]');
   const productEl = root.querySelector<HTMLSelectElement>('[data-filter-product]');
   const appEl = root.querySelector<HTMLSelectElement>('[data-filter-app]');
@@ -263,8 +326,6 @@ export function initMediaCatalog(
   const statTotal = root.querySelector('[data-stat-total]');
   const statLangs = root.querySelector('[data-stat-languages]');
   const statProducts = root.querySelector('[data-stat-products]');
-
-  if (!grid) return;
 
   const allEntries = [...entries];
   const locale = config.locale;
@@ -340,17 +401,32 @@ export function initMediaCatalog(
       return true;
     });
 
-    filtered = [...filtered].sort((a, b) =>
-      compareEntries(a, b, state.sort, locale, prioritizeLocale),
-    );
+    let visibleCount = 0;
 
-    grid.innerHTML = '';
-    const frag = document.createDocumentFragment();
-    for (const entry of filtered) frag.appendChild(renderEntry(entry, config));
-    grid.appendChild(frag);
+    for (const { format } of MEDIA_SECTIONS) {
+      const sectionEl = root.querySelector<HTMLElement>(`[data-media-section="${format}"]`);
+      const gridEl = sectionEl?.querySelector<HTMLElement>(`[data-media-grid="${format}"]`);
+      if (!sectionEl || !gridEl) continue;
 
-    if (visibleEl) visibleEl.textContent = String(filtered.length);
-    if (emptyEl) emptyEl.hidden = filtered.length > 0;
+      const bucket = filtered
+        .filter((e) => e.format === format)
+        .sort((a, b) => compareEntries(a, b, state.sort, locale, prioritizeLocale));
+
+      const showSection =
+        bucket.length > 0 && (!state.format || state.format === format);
+      sectionEl.hidden = !showSection;
+
+      gridEl.innerHTML = '';
+      if (showSection) {
+        const frag = document.createDocumentFragment();
+        for (const entry of bucket) frag.appendChild(renderEntry(entry, config));
+        gridEl.appendChild(frag);
+        visibleCount += bucket.length;
+      }
+    }
+
+    if (visibleEl) visibleEl.textContent = String(visibleCount);
+    if (emptyEl) emptyEl.hidden = visibleCount > 0;
   }
 
   function applyAndSync(): void {

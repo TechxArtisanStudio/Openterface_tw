@@ -21,6 +21,27 @@ export const OG_LOCALE_MAP: Record<string, string> = {
   nl: 'nl_NL',
 };
 
+/** BCP 47 tags for `<html lang>` (internal locale codes → valid language tags). */
+export const HTML_LANG_MAP: Record<string, string> = {
+  en: 'en',
+  de: 'de',
+  es: 'es',
+  fr: 'fr',
+  it: 'it',
+  ja: 'ja',
+  ko: 'ko',
+  pt: 'pt',
+  ro: 'ro',
+  zh: 'zh-Hans',
+  hk: 'zh-HK',
+  tw: 'zh-TW',
+  ru: 'ru',
+  ar: 'ar',
+  tr: 'tr',
+  pl: 'pl',
+  nl: 'nl',
+};
+
 export const TWITTER_SITE = '@TechxArtisan';
 
 /** Known share-image dimensions (probed from CDN assets). */
@@ -29,6 +50,7 @@ export const OG_IMAGE_SIZES: Record<string, { width: number; height: number }> =
   'https://assets.openterface.com/images/cover/mini-kvm-toolkit.webp': { width: 900, height: 674 },
   'https://assets.openterface.com/images/cover.webp': { width: 1280, height: 960 },
   'https://assets2.openterface.com/images/keymod/2in1.webp': { width: 1080, height: 1080 },
+  'https://openterface.com/keymod/rebirth/keycmd-welcome-headless.webp': { width: 1280, height: 1175 },
 };
 
 /** Avoid duplicate brand suffix when title already includes site name (e.g. home SEO titles). */
@@ -39,6 +61,10 @@ export function buildPageTitle(title: string, siteName: string): string {
 
 export function getOgLocale(locale: string): string {
   return OG_LOCALE_MAP[locale] ?? locale;
+}
+
+export function getHtmlLang(locale: string): string {
+  return HTML_LANG_MAP[locale] ?? locale;
 }
 
 export function getOgLocaleAlternates(currentLocale: string): string[] {
