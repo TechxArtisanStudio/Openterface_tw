@@ -9,7 +9,7 @@ export const tw: KeymodLandingStrings = {
     },
     nav: {
       docs: "文檔",
-      preLaunchCta: "預售",
+      preLaunchCta: "前往 Crowd Supply 支持",
     },
     povTabs: {
       keyboard: "鍵盤",
@@ -28,7 +28,7 @@ export const tw: KeymodLandingStrings = {
       equationEquals: "=",
       lead: "插入目標設備。BLE 控制，免驅設計，BIOS 級就緒。服務器、PC 或遊戲主機。任意 USB 接口。",
       docsCta: "文檔",
-      preLaunchCta: "預熱",
+      preLaunchCta: "前往 Crowd Supply 支持",
     },
     whatItIs: {
       eyebrow: "產品簡介",
@@ -49,7 +49,7 @@ export const tw: KeymodLandingStrings = {
       eyebrow: "選擇您的接口",
       title: "Mini 與 Plus",
       stackLine: "相同的 KeyCmd 應用，不同的接口設備以適配您的電腦。",
-      crowdSupplyCta: "在 Crowd Supply 開啟預售",
+      crowdSupplyCta: "Crowd Supply 已上線",
       mini: {
         name: "KeyMod Mini",
         port: "USB-C 公頭 → 目標設備",
@@ -127,10 +127,10 @@ export const tw: KeymodLandingStrings = {
         mediaLabel: "第一人稱視角 KM Pro 混合佈局（佔位符）",
       },
       proTerminal: {
-        badge: "終端 · 預覽",
+        badge: "終端",
         title: "手機 SSH 直連",
-        lead: "有線連接用 USB，機架操作用藍牙。預覽版演示現已在 KeyCmd 中上線。",
-        body: "KeyCmd 專屬終端模式：支持通過 USB ECM (Plus) 或 BLE-Eth (Mini) 進行 SSH 連接。完整的生產環境連接將在 KeyMod 固件第二階段完成後推出。",
+        lead: "直接從 KeyCmd 開啟 SSH 會話。有線時使用 USB，在機架旁使用藍牙。",
+        body: "KeyCmd 中的終端模式：透過 USB ECM（Plus）或 BLE-Eth（Mini）進行 SSH。今天即可在 macOS 和 Linux 目標上執行。",
         mediaLabel: "終端 SSH 會話（USB 傳輸，重拍）",
       },
       composeSend: {
@@ -262,19 +262,19 @@ export const tw: KeymodLandingStrings = {
           ],
         },
         terminal: {
-          badge: "終端 · 預覽",
+          badge: "終端",
           title: "通過手機 SSH",
           body: "專屬終端模式通過 KeyMod 橋接運行 SSH。在機器旁追求速度可選擇 USB，在房間另一側則可選擇藍牙。",
-          experimentalHint: "預覽功能。通過 KeyMod 硬件進行實時 SSH 將在固件第二階段推出。",
+          experimentalHint: "",
           demo: {
             interactiveDemoLabel: "互動演示",
-            title: "終端預覽",
+            title: "終端演示",
             summary: "體驗預設的 SSH 會話回放，無需硬件。",
             statusDisconnected: "已斷開",
             statusConnecting: "連接中…",
             statusConnected: "已連接",
-            demoBleLabel: "預覽演示（藍牙）",
-            demoUsbLabel: "預覽演示（USB）",
+            demoBleLabel: "演示（藍牙）",
+            demoUsbLabel: "演示（USB）",
             transportBle: "BLE",
             transportUsb: "USB",
             uiFidelityNote: "近似 UI。請在手機上查看 KeyCmd 獲取實時應用。",
@@ -290,7 +290,7 @@ export const tw: KeymodLandingStrings = {
             label: "BLE-Eth · KeyMod Mini",
             body: "當 Mini 位於目標設備時提供無線 SSH。建議使用緊湊型終端佈局。KeyCmd 現已提供預覽演示。",
           },
-          notice: "KeyCmd 現已提供終端 UI 和傳輸棧，並附帶預覽演示（USB 和藍牙）。通過 KeyMod 硬件進行實時 SSH 將在固件第二階段驗收後推出。",
+          notice: "終端模式現已在 KeyCmd 中提供。透過 KeyMod 橋接在 macOS 和 Linux 目標上開啟 SSH 會話。透過 RNDIS 的 Windows 目標支援正在開發中。",
         },
       },
       gameZone: {
@@ -471,10 +471,10 @@ export const tw: KeymodLandingStrings = {
     productJourney: {
       eyebrow: "產品歷程",
       title: "從概念到您的桌面",
-      subtitle: "七大里程碑已達成。發佈前驗證正在進行中。眾籌與交付即將啟動。",
+      subtitle: "已完成八個里程碑。限量工程樣品已分發。Crowd Supply 眾籌已上線。",
       scrollHint: "← 滑動查看早期里程碑",
       nowLabel: "當前",
-      nowSublabel: "預發佈 · 硬件與固件最終驗證",
+      nowSublabel: "Crowd Supply 眾籌進行中",
       milestones: [
         {
           id: "concept",
@@ -491,8 +491,8 @@ export const tw: KeymodLandingStrings = {
         {
           id: "cs-prelaunch",
           status: "done",
-          title: "Crowd Supply 預發佈",
-          lead: "眾籌頁面已上線。關注以獲取發佈日動態。",
+          title: "Crowd Supply 眾籌活動已上線",
+          lead: "活動已上線。支持 KeyMod 以確保您的訂單。",
           href: keymodLinks.crowdSupply,
         },
         {
@@ -521,19 +521,16 @@ export const tw: KeymodLandingStrings = {
         },
         {
           id: "beta-2",
-          status: "upcoming",
-          variant: "beta",
-          badge: "內測 · 第二輪",
-          title: "下一輪內測邀請",
-          lead: "在眾籌前，針對全新固件和硬件開展更大範圍的封閉內測。",
-          timingLabel: "發佈前",
-          href: "#updates",
+          status: "done",
+          title: "工程樣品已分發",
+          lead: "限量工程級單元分配給早期支持者進行實際驗證。",
         },
         {
           id: "crowdfunding",
-          status: "upcoming",
-          title: "眾籌開啟",
-          timingLabel: "~2026年7月中旬",
+          status: "done",
+          title: "眾籌已上線",
+          timingLabel: "2026年8月",
+          href: keymodLinks.crowdSupply,
         },
         {
           id: "campaign",
@@ -577,15 +574,15 @@ export const tw: KeymodLandingStrings = {
     },
     crowdSupplyCampaign: {
       eyebrow: "Crowd Supply",
-      title: "Crowd Supply 預售開啟",
-      body: "在 Crowd Supply 支持 KeyMod Mini 和 Plus —— 口袋級 USB 橋接器，將您的手機變身無線控制台。支持我們，讓夢想成真！",
-      cta: "參與預售",
+      title: "Crowd Supply 已上線",
+      body: "在 Crowd Supply 上支持 KeyMod Mini 和 Plus。將手機變成無線控制台的口袋 USB 橋接器。活動進行中。",
+      cta: "支持活動",
     },
     crowdSupplySupport: {
       eyebrow: "支持本項目",
       title: "助力我們推出下一代產品",
-      body: "在 Crowd Supply 上關注 KeyMod，並在眾籌開啟時支持我們。當更多開發者支持本項目時，像 Agent 這樣的實驗性功能就能更快落地——每一位支持者的助力，都能讓固件路線圖從規劃變為現實。",
-      cta: "在 Crowd Supply 關注",
+      body: "KeyMod 已在 Crowd Supply 上線。支持活動並幫助我們建構韌體路線圖。當更多創客支持該項目時，Agent 等實驗模式會更快推出。每位支持者都為我們贏得更多工程時間。",
+      cta: "前往 Crowd Supply 支持",
     },
     crowdSupplyOpensource: {
       eyebrow: "設計即開源",
@@ -608,7 +605,7 @@ export const tw: KeymodLandingStrings = {
       title: "獲取 KeyMod 發售最新資訊",
       description: "產品發售、固件發佈及配置指南。每月最多一封郵件，絕無垃圾郵件。",
       benefits: [
-        "優先獲取眾籌與預售通道信息",
+        "直接存取 Crowd Supply 活動",
         "配置指南與 KeyCmd 發佈說明",
         "一鍵隨時取消訂閱",
       ],
