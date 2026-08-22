@@ -36,7 +36,7 @@ export const homeSlides: HomeSlide[] = [
       'https://assets2.openterface.com/images/keymod/feature.webp',
     ],
     primaryCta: {
-      label: 'Pre-launch',
+      label: '前往 Crowd Supply 支持',
       href: siteConfig.links.keymodCrowdsupply,
       external: true,
       analyticsEvent: 'crowdsupply_click',
