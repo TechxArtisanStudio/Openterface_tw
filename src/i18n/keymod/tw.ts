@@ -9,6 +9,7 @@ export const tw: KeymodLandingStrings = {
     },
     nav: {
       docs: "文檔",
+    forum: "論壇",
       preLaunchCta: "前往 Crowd Supply 支持",
     },
     povTabs: {
